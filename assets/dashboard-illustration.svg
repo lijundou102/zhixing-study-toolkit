@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="340" height="220" viewBox="0 0 340 220" role="img" aria-label="学习主题插画：打开的书本、时钟、绿植与铅笔">
+  <defs>
+    <linearGradient id="bgGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#eef1fd"/>
+      <stop offset="1" stop-color="#e7f3f6"/>
+    </linearGradient>
+    <linearGradient id="bookGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#7c8ff7"/>
+      <stop offset="1" stop-color="#4f6ef2"/>
+    </linearGradient>
+  </defs>
+
+  <!-- 柔和背景 -->
+  <rect x="8" y="8" width="324" height="204" rx="28" fill="url(#bgGrad)"/>
+
+  <!-- 星点与几何装饰 -->
+  <circle cx="40" cy="46" r="3" fill="#c9b8f5"/>
+  <circle cx="306" cy="40" r="4" fill="#f5c26b"/>
+  <path d="M64 156 l2 5 5 2 -5 2 -2 5 -2 -5 -5 -2 5 -2 z" fill="#c9b8f5"/>
+  <path d="M304 176 l1.5 4 4 1.5 -4 1.5 -1.5 4 -1.5 -4 -4 -1.5 4 -1.5 z" fill="#f5c26b"/>
+
+  <!-- 时钟（专注计时） -->
+  <g>
+    <circle cx="284" cy="56" r="26" fill="#ffffff" stroke="#2bb3a3" stroke-width="5"/>
+    <path d="M284 56 L284 42" stroke="#2bb3a3" stroke-width="3.5" stroke-linecap="round"/>
+    <path d="M284 56 L294 62" stroke="#2bb3a3" stroke-width="3.5" stroke-linecap="round"/>
+    <circle cx="284" cy="56" r="3" fill="#2bb3a3"/>
+  </g>
+
+  <!-- 打开的书本 -->
+  <g>
+    <path d="M84 124 C84 98 106 86 134 86 C162 86 184 98 184 124 L184 178 C184 158 162 148 134 148 C106 148 84 158 84 178 Z" fill="#7c8ff7"/>
+    <path d="M184 124 C184 98 206 86 234 86 C262 86 284 98 284 124 L284 178 C284 158 262 148 234 148 C206 148 184 158 184 178 Z" fill="url(#bookGrad)"/>
+    <path d="M184 124 L184 178" stroke="#ffffff" stroke-width="2" opacity="0.6"/>
+    <path d="M100 130 L168 130 M100 144 L168 144" stroke="#ffffff" stroke-width="3" stroke-linecap="round" opacity="0.55"/>
+    <path d="M200 130 L268 130 M200 144 L268 144" stroke="#ffffff" stroke-width="3" stroke-linecap="round" opacity="0.55"/>
+  </g>
+
+  <!-- 铅笔（学习用品） -->
+  <g transform="translate(46 34) rotate(24)">
+    <rect x="0" y="0" width="42" height="9" rx="3" fill="#f5c26b"/>
+    <path d="M42 0 L51 4.5 L42 9 Z" fill="#e8b45c"/>
+    <rect x="-7" y="0" width="8" height="9" rx="2" fill="#8b6fe8"/>
+  </g>
+
+  <!-- 绿植 -->
+  <g>
+    <path d="M46 190 C46 158 52 140 70 136" stroke="#2bb3a3" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <ellipse cx="66" cy="134" rx="7" ry="13" fill="#43c6b3" transform="rotate(-28 66 134)"/>
+    <ellipse cx="80" cy="144" rx="6" ry="11" fill="#7ad3c6" transform="rotate(18 80 144)"/>
+    <path d="M54 192 L98 192" stroke="#bfe3dd" stroke-width="4" stroke-linecap="round"/>
+  </g>
+</svg>
