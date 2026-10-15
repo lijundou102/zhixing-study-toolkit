@@ -1,5 +1,7 @@
 # 知行 · 个人学习工具箱
 
+> 在线访问：<https://lijundou102.github.io/zhixing-study-toolkit/>
+
 一个面向大学生的轻量学习管理网站，使用原生 HTML、CSS 和 JavaScript 开发，无后端、无数据库服务器。项目把「任务规划、专注计时、网站收藏、资料整理」集中在一个页面里，帮助使用者更有序地安排学习。
 
 ## 项目简介
@@ -141,9 +143,9 @@ macOS 步骤：
 
 ## 部署说明与已知限制
 
-项目是纯前端静态网站，可以在需要时部署到任意静态托管平台（如 GitHub Pages、Netlify、Vercel 等），无需服务器或数据库配置。详细的部署准备与验证步骤请参见 [DEPLOYMENT.md](DEPLOYMENT.md)。
+项目是纯前端静态网站，可以部署到任意静态托管平台（如 GitHub Pages、Netlify、Vercel 等），无需服务器或数据库配置。详细的部署准备与验证步骤请参见 [DEPLOYMENT.md](DEPLOYMENT.md)。
 
-> 当前项目**尚未正式部署**，没有公开访问网址。
+> 本项目已部署到 GitHub Pages，线上地址：<https://lijundou102.github.io/zhixing-study-toolkit/>
 
 已知限制：
 
