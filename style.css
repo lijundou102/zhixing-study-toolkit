@@ -5,17 +5,50 @@
 
 /* 主题配色：通过 CSS 自定义属性统一管理 */
 :root {
-  --color-primary: #4f6ef2;       /* 主色（按钮、导航高亮） */
+  --color-primary: #4f6ef2;       /* 主色 */
   --color-primary-dark: #3a55c9;  /* 主色加深（悬停） */
+  --color-primary-soft: #e7ecfd;  /* 主色浅底（图标底板等） */
+  --color-primary-border: #b9c6f7;/* 主色浅描边 */
+  --color-accent-teal: #2bb3a3;   /* 强调色：青绿 */
+  --color-accent-teal-soft: #dff3f0;
+  --color-accent-lavender: #8b6fe8;/* 强调色：淡紫 */
+  --color-accent-lavender-soft: #ece7fb;
+  --color-ring: #7c8ff7;          /* 进度圆环 */
   --color-bg: #f5f6fa;            /* 页面背景 */
   --color-surface: #ffffff;       /* 卡片 / 面板背景 */
   --color-text: #2b2f3a;          /* 主要文字 */
   --color-text-muted: #7a8090;    /* 次要文字 */
   --color-border: #e3e5ec;        /* 边框 */
   --color-danger: #e5484d;        /* 危险操作（删除） */
+  --color-danger-soft: rgba(229, 72, 77, 0.08); /* 危险操作浅底 */
+  --color-overlay: rgba(43, 47, 58, 0.6);        /* 弹窗遮罩 */
+  --gradient-welcome: linear-gradient(120deg, #eef1fd 0%, #e7f3f6 100%);
   --radius: 12px;                 /* 圆角 */
   --shadow: 0 2px 8px rgba(43, 47, 58, 0.06); /* 卡片阴影 */
   --max-width: 1160px;            /* 内容最大宽度 */
+}
+
+/* 深色主题 */
+:root[data-theme="dark"] {
+  --color-primary: #7c9aff;
+  --color-primary-dark: #96b0ff;
+  --color-primary-soft: rgba(124, 154, 255, 0.18);
+  --color-primary-border: #4f63c4;
+  --color-accent-teal: #4fd0c0;
+  --color-accent-teal-soft: rgba(79, 208, 192, 0.16);
+  --color-accent-lavender: #b3a1f0;
+  --color-accent-lavender-soft: rgba(179, 161, 240, 0.18);
+  --color-ring: #7c9aff;
+  --color-bg: #12141a;
+  --color-surface: #1c1f27;
+  --color-text: #e6e8ef;
+  --color-text-muted: #9aa1b0;
+  --color-border: #2e3340;
+  --color-danger: #ff6b70;
+  --color-danger-soft: rgba(255, 107, 112, 0.16);
+  --color-overlay: rgba(0, 0, 0, 0.62);
+  --gradient-welcome: linear-gradient(120deg, rgba(124, 154, 255, 0.14) 0%, rgba(79, 208, 192, 0.12) 100%);
+  --shadow: 0 2px 8px rgba(0, 0, 0, 0.45);
 }
 
 /* 基础重置 */
@@ -101,6 +134,35 @@ body {
   color: #ffffff;
 }
 
+/* 主题切换按钮 */
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-text);
+  border-radius: 999px;
+  padding: 6px 12px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background 0.2s, color 0.2s;
+}
+
+.theme-toggle:hover {
+  background: var(--color-bg);
+}
+
+.theme-toggle .theme-icon {
+  width: 16px;
+  height: 16px;
+  display: none;
+}
+
+.theme-toggle[data-choice="light"] .theme-icon-light { display: block; }
+.theme-toggle[data-choice="dark"] .theme-icon-dark { display: block; }
+.theme-toggle[data-choice="system"] .theme-icon-system { display: block; }
+
 /* 主内容区 */
 .site-main {
   flex: 1;
@@ -156,18 +218,18 @@ body {
 }
 
 .stat-icon-box--blue {
-  background: #e7ecfd;
-  color: #4f6ef2;
+  background: var(--color-primary-soft);
+  color: var(--color-primary);
 }
 
 .stat-icon-box--teal {
-  background: #dff3f0;
-  color: #2bb3a3;
+  background: var(--color-accent-teal-soft);
+  color: var(--color-accent-teal);
 }
 
 .stat-icon-box--lavender {
-  background: #ece7fb;
-  color: #8b6fe8;
+  background: var(--color-accent-lavender-soft);
+  color: var(--color-accent-lavender);
 }
 
 .stat-icon {
@@ -215,7 +277,7 @@ body {
 
 .progress-ring-fg {
   fill: none;
-  stroke: #7c8ff7;
+  stroke: var(--color-ring);
   stroke-width: 7;
   stroke-linecap: round;
   stroke-dasharray: 263.89;
@@ -229,7 +291,7 @@ body {
   align-items: center;
   justify-content: space-between;
   gap: 24px;
-  background: linear-gradient(120deg, #eef1fd 0%, #e7f3f6 100%);
+  background: var(--gradient-welcome);
   border: 1px solid var(--color-border);
   border-radius: var(--radius);
   box-shadow: var(--shadow);
@@ -338,7 +400,7 @@ body {
   flex-shrink: 0;
   width: 18px;
   height: 18px;
-  border: 2px solid #b9c6f7;
+  border: 2px solid var(--color-primary-border);
   border-radius: 50%;
   background: var(--color-surface);
 }
@@ -414,9 +476,10 @@ body {
   font-family: ui-monospace, "SF Mono", Consolas, "Courier New", monospace;
 }
 
-.badge-math { background: #e7ecfd; color: #4f6ef2; }
-.badge-code { background: #ece7fb; color: #8b6fe8; }
-.badge-english { background: #dff3f0; color: #2bb3a3; }
+.badge-math { background: var(--color-primary-soft); color: var(--color-primary); }
+.badge-code { background: var(--color-accent-lavender-soft); color: var(--color-accent-lavender); }
+.badge-english { background: var(--color-accent-teal-soft); color: var(--color-accent-teal); }
+.badge-other { background: var(--color-border); color: var(--color-text-muted); }
 
 .resource-preview-body {
   display: flex;
@@ -598,7 +661,7 @@ a:focus-visible {
 }
 
 .task-delete:hover {
-  background: rgba(229, 72, 77, 0.08);
+  background: var(--color-danger-soft);
 }
 
 /* 空状态提示 */
@@ -744,7 +807,7 @@ a:focus-visible {
 }
 
 .timer-settings-message.success {
-  color: #2bb3a3;
+  color: var(--color-accent-teal);
 }
 
 /* 学习资源库 */
@@ -886,7 +949,7 @@ a:focus-visible {
 }
 
 .resource-delete:hover {
-  background: rgba(229, 72, 77, 0.08);
+  background: var(--color-danger-soft);
 }
 
 /* 资源库标签页 */
@@ -950,7 +1013,7 @@ a:focus-visible {
 }
 
 .material-message.success {
-  color: #2bb3a3;
+  color: var(--color-accent-teal);
 }
 
 .material-list {
@@ -1002,7 +1065,7 @@ a:focus-visible {
 .preview-modal {
   position: fixed;
   inset: 0;
-  background: rgba(43, 47, 58, 0.6);
+  background: var(--color-overlay);
   display: flex;
   align-items: center;
   justify-content: center;

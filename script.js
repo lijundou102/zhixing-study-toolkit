@@ -39,58 +39,76 @@ let timerEndTime = null;
 // 静态资源数据：不接入后端 / 数据库 / API，也不存 localStorage。
 const RESOURCES = [
   {
-    title: 'Khan Academy 数学',
+    title: '中国大学 MOOC',
     category: '数学',
-    description: '覆盖从基础算术到高等数学的免费课程与练习。',
-    url: 'https://www.khanacademy.org/math'
+    description: '国家级在线课程平台，含高等数学、数学分析等大学课程。',
+    url: 'https://www.icourse163.org/'
   },
   {
-    title: "Paul's Online Math Notes",
+    title: '国家高等教育智慧教育平台',
     category: '数学',
-    description: '大学数学讲义与笔记，涵盖代数、微积分等内容。',
-    url: 'https://tutorial.math.lamar.edu/'
+    description: '教育部主导的大学课程平台，覆盖工科数学、数学分析等课程。',
+    url: 'https://higher.smartedu.cn/'
   },
   {
-    title: 'Wolfram MathWorld',
-    category: '数学',
-    description: '权威数学百科全书，收录大量数学概念与公式。',
-    url: 'https://mathworld.wolfram.com/'
-  },
-  {
-    title: 'MDN Web 开发学习区',
+    title: 'Gitee',
     category: '编程',
-    description: 'Mozilla 官方教程，系统学习 HTML、CSS 与 JavaScript。',
-    url: 'https://developer.mozilla.org/en-US/docs/Learn_web_development'
+    description: '国内代码托管与开源协作平台。',
+    url: 'https://gitee.com/'
   },
   {
-    title: 'MDN JavaScript 指南',
+    title: '博客园',
     category: '编程',
-    description: '从入门到进阶的 JavaScript 权威指南。',
-    url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide'
+    description: '老牌中文开发者技术博客社区。',
+    url: 'https://www.cnblogs.com/'
   },
   {
-    title: 'freeCodeCamp',
+    title: 'CSDN',
     category: '编程',
-    description: '免费互动式编程学习平台，含大量实战项目。',
-    url: 'https://www.freecodecamp.org/learn/'
+    description: '国内知名的 IT 技术社区与博客平台。',
+    url: 'https://www.csdn.net/'
   },
   {
-    title: 'British Council LearnEnglish',
-    category: '英语',
-    description: '英国文化协会官方英语学习资源，覆盖听说读写。',
-    url: 'https://learnenglish.britishcouncil.org/'
+    title: '稀土掘金',
+    category: '编程',
+    description: '面向开发者的技术内容与分享社区。',
+    url: 'https://juejin.cn/'
   },
   {
-    title: 'BBC Learning English',
-    category: '英语',
-    description: 'BBC 出品的英语学习节目与课程。',
-    url: 'https://www.bbc.co.uk/learningenglish'
+    title: '菜鸟教程',
+    category: '编程',
+    description: '零基础入门的前后端编程教程网站。',
+    url: 'https://www.runoob.com/'
   },
   {
-    title: 'Cambridge Dictionary',
-    category: '英语',
-    description: '剑桥在线词典，提供释义、例句与发音。',
-    url: 'https://dictionary.cambridge.org/'
+    title: '洛谷',
+    category: '编程',
+    description: '在线评测与算法竞赛训练平台，适合 OI / ACM 练习。',
+    url: 'https://www.luogu.com.cn/'
+  },
+  {
+    title: '百度',
+    category: '其他',
+    description: '常用的中文搜索引擎。',
+    url: 'https://www.baidu.com/'
+  },
+  {
+    title: '中国知网',
+    category: '其他',
+    description: '中文学术文献与论文检索平台。',
+    url: 'https://www.cnki.net/'
+  },
+  {
+    title: '机器之心',
+    category: '其他',
+    description: '聚焦人工智能与机器学习的专业媒体。',
+    url: 'https://www.jiqizhixin.com/'
+  },
+  {
+    title: '量子位',
+    category: '其他',
+    description: '关注 AI 与前沿科技的技术资讯媒体。',
+    url: 'https://www.qbitai.com/'
   }
 ];
 
@@ -418,7 +436,7 @@ function renderTodoPreview() {
 // 刷新首页"学习资源推荐"：复用 RESOURCES 数据，每个分类取第一条，展示 3 个分类。
 function renderResourcePreview() {
   const preview = [];
-  ['数学', '编程', '英语'].forEach(function (cat) {
+  ['数学', '编程', '其他'].forEach(function (cat) {
     const found = RESOURCES.find(function (resource) {
       return resource.category === cat;
     });
@@ -449,7 +467,10 @@ function getResourceBadge(category) {
   if (category === '编程') {
     return { symbol: '</>', cls: 'badge-code' };
   }
-  return { symbol: 'Aa', cls: 'badge-english' };
+  if (category === '英语') {
+    return { symbol: 'Aa', cls: 'badge-english' };
+  }
+  return { symbol: '★', cls: 'badge-other' };
 }
 
 // 为一条资源创建首页推荐条目。
@@ -1702,9 +1723,123 @@ function initTasks() {
   updateDashboard();
 }
 
+/* ===== 主题（浅色 / 深色 / 跟随系统） ===== */
+
+const THEME_KEY = 'zhixing-theme';
+const THEME_NEXT = { light: 'dark', dark: 'system', system: 'light' };
+
+// 当前用户选择：'light' | 'dark' | 'system'
+let themeChoice = 'system';
+// matchMedia 对象（仅在 system 状态下监听）
+let themeMediaQuery = null;
+
+// 从 localStorage 读取用户选择。
+function loadThemeChoice() {
+  let saved = null;
+  try {
+    saved = localStorage.getItem(THEME_KEY);
+  } catch (e) {
+    saved = null;
+  }
+  themeChoice = (saved === 'light' || saved === 'dark' || saved === 'system') ? saved : 'system';
+}
+
+// 保存用户选择（localStorage 不可用时忽略）。
+function saveThemeChoice() {
+  try {
+    localStorage.setItem(THEME_KEY, themeChoice);
+  } catch (e) {
+    /* 忽略 */
+  }
+}
+
+// 把用户选择解析为实际主题（light / dark）。
+function resolveTheme() {
+  if (themeChoice === 'light') {
+    return 'light';
+  }
+  if (themeChoice === 'dark') {
+    return 'dark';
+  }
+  // system：跟随系统偏好
+  if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+    return 'dark';
+  }
+  return 'light';
+}
+
+// 应用主题，并更新切换按钮的状态。
+function applyTheme() {
+  document.documentElement.setAttribute('data-theme', resolveTheme());
+
+  const btn = document.getElementById('theme-toggle');
+  const label = document.getElementById('theme-toggle-label');
+  if (btn) {
+    btn.setAttribute('data-choice', themeChoice);
+    const labelText = themeChoice === 'light' ? '浅色' : themeChoice === 'dark' ? '深色' : '系统';
+    if (label) {
+      label.textContent = labelText;
+    }
+    const nextText = THEME_NEXT[themeChoice] === 'light' ? '浅色' : THEME_NEXT[themeChoice] === 'dark' ? '深色' : '系统';
+    const desc = '当前主题：' + labelText + '，点击切换为' + nextText;
+    btn.setAttribute('aria-label', desc);
+    btn.setAttribute('title', desc);
+  }
+}
+
+// 系统主题变化时（仅 system 状态下）更新。
+function handleSystemThemeChange() {
+  if (themeChoice === 'system') {
+    applyTheme();
+  }
+}
+
+// 管理 system 状态下的 matchMedia 监听，避免重复绑定 / 遗留监听。
+function manageThemeListener() {
+  if (themeChoice === 'system') {
+    if (!themeMediaQuery && window.matchMedia) {
+      themeMediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+      if (themeMediaQuery.addEventListener) {
+        themeMediaQuery.addEventListener('change', handleSystemThemeChange);
+      } else if (themeMediaQuery.addListener) {
+        themeMediaQuery.addListener(handleSystemThemeChange);
+      }
+    }
+  } else {
+    if (themeMediaQuery) {
+      if (themeMediaQuery.removeEventListener) {
+        themeMediaQuery.removeEventListener('change', handleSystemThemeChange);
+      } else if (themeMediaQuery.removeListener) {
+        themeMediaQuery.removeListener(handleSystemThemeChange);
+      }
+      themeMediaQuery = null;
+    }
+  }
+}
+
+// 切换主题（浅色 → 深色 → 系统 → 浅色）。
+function toggleTheme() {
+  themeChoice = THEME_NEXT[themeChoice];
+  saveThemeChoice();
+  applyTheme();
+  manageThemeListener();
+}
+
+// 初始化主题。
+function initTheme() {
+  loadThemeChoice();
+  applyTheme();
+  manageThemeListener();
+  const btn = document.getElementById('theme-toggle');
+  if (btn) {
+    btn.addEventListener('click', toggleTheme);
+  }
+}
+
 /* ===== 启动 ===== */
 
 document.addEventListener('DOMContentLoaded', function () {
+  initTheme();
   initNavigation();
   initTasks();
   initTimer();
