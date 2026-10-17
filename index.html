@@ -3,6 +3,23 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script>
+    // 防止首屏闪烁：在首次绘制前根据已保存主题或系统偏好确定主题
+    (function () {
+      var theme = 'light';
+      try {
+        var saved = localStorage.getItem('zhixing-theme');
+        if (saved === 'light' || saved === 'dark') {
+          theme = saved;
+        } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+          theme = 'dark';
+        }
+      } catch (e) {
+        /* localStorage 或 matchMedia 不可用时保持浅色 */
+      }
+      document.documentElement.setAttribute('data-theme', theme);
+    })();
+  </script>
   <title>知行 · 个人学习工具箱</title>
   <link rel="stylesheet" href="style.css">
 </head>
@@ -24,6 +41,20 @@
       <button class="nav-link" data-section="timer">专注计时器</button>
       <button class="nav-link" data-section="resources">学习资源库</button>
       <button class="nav-link" data-section="about">关于本站</button>
+      <button id="theme-toggle" class="theme-toggle" type="button" data-choice="system" aria-label="切换主题" title="切换主题">
+        <svg class="theme-icon theme-icon-light" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="4"></circle>
+          <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path>
+        </svg>
+        <svg class="theme-icon theme-icon-dark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3a7 7 0 0 0 9.79 9.79z"></path>
+        </svg>
+        <svg class="theme-icon theme-icon-system" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <rect x="2" y="3" width="20" height="14" rx="2"></rect>
+          <path d="M8 21h8M12 17v4"></path>
+        </svg>
+        <span id="theme-toggle-label" class="theme-toggle-label">系统</span>
+      </button>
     </div>
   </nav>
 
